@@ -85,7 +85,6 @@ function makeHosts(containersList = []) {
 function bindHosts(initialHosts, currentHosts) {
 	;(diff(initialHosts, currentHosts) || []).forEach(
 		({ kind, path: [host] }) => {
-			console.log(host, kind)
 			if (kind === 'N') {
 				console.log(host)
 				const { upstream = [] } = currentHosts[host]
@@ -98,7 +97,7 @@ function bindHosts(initialHosts, currentHosts) {
 				server.unregister(host)
 			}
 
-			if (kind === 'E') {
+			if (kind === 'E' || kind === 'A') {
 				const { upstream = [] } = currentHosts[host]
 				server.unregister(host)
 				upstream.forEach(upstream => {

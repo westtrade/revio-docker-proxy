@@ -1,0 +1,11 @@
+version: '3.1'
+
+services:
+    proxy:
+        image: westtrade/revio-proxy
+        volumes:
+            - '/var/run/docker.sock:/var/run/docker.sock:ro'
+        network_mode: "host"
+        ports:
+             - "80:80"
+             - "443:443"
