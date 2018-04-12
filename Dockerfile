@@ -8,7 +8,5 @@ RUN apk update && apk add yarn python g++ make && rm -rf /var/cache/apk/*
 RUN yarn
 
 COPY . .
-EXPOSE 80
-EXPOSE 443
 
 CMD [ "npm", "start" ]

@@ -59,7 +59,11 @@ function makeHosts(containersList = []) {
 			Config: { Env },
 		} = info
 
-		const { VIRTUAL_HOST, VIRTUAL_PORT = 80, VIRTUAL_HTTPS = null } = Env
+		const {
+			VIRTUAL_HOST = '',
+			VIRTUAL_PORT = 80,
+			VIRTUAL_HTTPS = null,
+		} = Env
 
 		const ips = Object.values(Networks).map(
 			({ IPAddress }) => `http://${IPAddress}:${VIRTUAL_PORT || 80}/`,
@@ -69,14 +73,18 @@ function makeHosts(containersList = []) {
 			return hosts
 		}
 
-		if (!hosts[VIRTUAL_HOST]) {
-			hosts[VIRTUAL_HOST] = {
-				upstream: [],
-				https: VIRTUAL_HTTPS,
-			}
-		}
+		const hostsList = VIRTUAL_HOST.split(',')
+			.map(VIRTUAL_HOST => VIRTUAL_HOST.trim())
+			.forEach(VIRTUAL_HOST => {
+				if (!hosts[VIRTUAL_HOST]) {
+					hosts[VIRTUAL_HOST] = {
+						upstream: [],
+						https: VIRTUAL_HTTPS,
+					}
+				}
 
-		hosts[VIRTUAL_HOST].upstream.push(ips[0])
+				hosts[VIRTUAL_HOST].upstream.push(ips[0])
+			})
 
 		return hosts
 	}, {})
